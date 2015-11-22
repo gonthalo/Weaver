@@ -48,8 +48,13 @@ function draw(){
 			if (matrix[ii][jj]){
 
 			} else {
-				tira(50*(b + ii - jj), 50*(1 + ii + jj), c[0], c[1], c[2]);
-				tirb(50*(b + ii - jj), 50*(1 + ii + jj), lis[jj][0], lis[jj][1], lis[jj][2]);
+				if ((ii + jj)%2){
+					tira(50*(b + ii - jj), 50*(1 + ii + jj), c[0], c[1], c[2]);
+					tirb(50*(b + ii - jj), 50*(1 + ii + jj), lis[jj][0], lis[jj][1], lis[jj][2]);
+				} else {
+					tirb(50*(b + ii - jj), 50*(1 + ii + jj), lis[jj][0], lis[jj][1], lis[jj][2]);
+					tira(50*(b + ii - jj), 50*(1 + ii + jj), c[0], c[1], c[2]);
+				}
 			}
 		}
 	}
@@ -89,15 +94,6 @@ function tirb(x0, y0, r, g, b){
 		}
 	}
 }
-/*
-for (var ii=0; ii<12; ii++){
-	for (var jj=0; jj<5; jj++){
-		lista=randcol();
-		tira(100*ii, 100*jj, lista[0], lista[1], lista[2]);
-		lista=randcol();
-		tirb(100*ii + 50, 100*jj + 50, lista[0], lista[1], lista[2]);
-	}
-}*/
 
 function start(){
 	rese();
