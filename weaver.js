@@ -15,6 +15,19 @@ function prod(lis, k){
 	return lis;
 }
 
+function randcol(){
+	return [parseInt(Math.random()*4)*85, parseInt(Math.random()*4)*85, parseInt(Math.random()*4)*85];
+}
+
+function rgbstr(lis){
+	return "rgb(" + lis[0] + "," + lis[1] + "," + lis[2] + ")";
+}
+
+function pix(p, q, c){
+	pluma.fillStyle = c;
+	pluma.fillRect(p, q, 2, 1);
+}
+
 function rese(){
 	for (var ii=0; ii<a; ii++){
 		matrix[ii]=[];
@@ -91,19 +104,6 @@ function resetsol(){
 	}
 }
 
-function randcol(){
-	return [parseInt(Math.random()*4)*85, parseInt(Math.random()*4)*85, parseInt(Math.random()*4)*85];
-}
-
-function rgbstr(lis){
-	return "rgb(" + lis[0] + "," + lis[1] + "," + lis[2] + ")";
-}
-
-function pix(p, q, c){
-	pluma.fillStyle = c;
-	pluma.fillRect(p, q, 2, 1);
-}
-
 function eq(l1, l2){
 	if (l1.length!=l2.length){
 		return false;
@@ -170,7 +170,8 @@ function draw(){
 	}
 	if (checkwin){
 		console.log("You win. Yay!");
-		document.getElementById("mensajes").innerHTML = "Has ganado";
+		pluma.font = "50px Times";
+		pluma.strokeText("Victoria", 10, 60);
 	}
 }
 
@@ -292,8 +293,8 @@ lienzo.addEventListener("click", function (e){
 	console.log(x, y);
 	x = x/50.0;
 	y = y/50.0;
-	var xx = ro((x + y)/2 - b + 1);
-	var yy = ro((y - x)/2 + b - 3);
+	var xx = ro((x + y - b - 3)/2);
+	var yy = ro((y - x + b - 1)/2);
 	console.log(xx, yy);
 	if (xx>=0 && xx<a && yy>=0 && yy<b){
 		change(xx, yy);
@@ -302,12 +303,23 @@ lienzo.addEventListener("click", function (e){
 }, false);
 
 function start(){
+	matrix = [];
+	cola = [];
+	colb = [];
+	sola = [];
+	solb = [];
 	rese();
 	resetcol();
 	resetsol();
 	draw();
-	document.getElementById("mensajes").innerHTML = "";
+}
+
+function swap(){
+	a = parseInt(document.getElementById("an").value);
+	b = parseInt(document.getElementById("bn").value);
+	pluma.fillStyle = "white";
+	pluma.fillRect(0, 0, 600, 600);
+	start();
 }
 
 start();
-
