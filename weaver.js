@@ -3,10 +3,24 @@ var pluma = lienzo.getContext("2d");
 var a = 5;
 var b = 5;
 var matrix = [];
-for (var ii=0; ii<a; ii++){
-	matrix[ii]=[];
-	for (var jj=0; jj<b; jj++){
-		matrix[ii][jj] = false;
+var cola = [];
+var colb = [];
+
+function rese(){
+	for (var ii=0; ii<a; ii++){
+		matrix[ii]=[];
+		for (var jj=0; jj<b; jj++){
+			matrix[ii][jj] = false;
+		}
+	}
+}
+
+function resetcol(){
+	for (var ii=0; ii<a; ii++){
+		cola[ii] = randcol();
+	}
+	for (var ii=0; ii<b; ii++){
+		colb[ii] = randcol();
 	}
 }
 
@@ -24,12 +38,18 @@ function pix(p, q, c){
 }
 
 function draw(){
+	var lis = [];
+	for (var ii=0; ii<b; ii++){
+		lis[ii]=colb[ii];
+	}
 	for (var ii=0; ii<a; ii++){
+		c = cola[ii];
 		for (var jj=0; jj<b; jj++){
 			if (matrix[ii][jj]){
 
 			} else {
-
+				tira(50*(b + ii - jj), 50*(1 + ii + jj), c[0], c[1], c[2]);
+				tirb(50*(b + ii - jj), 50*(1 + ii + jj), lis[jj][0], lis[jj][1], lis[jj][2]);
 			}
 		}
 	}
@@ -69,7 +89,7 @@ function tirb(x0, y0, r, g, b){
 		}
 	}
 }
-
+/*
 for (var ii=0; ii<12; ii++){
 	for (var jj=0; jj<5; jj++){
 		lista=randcol();
@@ -77,4 +97,12 @@ for (var ii=0; ii<12; ii++){
 		lista=randcol();
 		tirb(100*ii + 50, 100*jj + 50, lista[0], lista[1], lista[2]);
 	}
+}*/
+
+function start(){
+	rese();
+	resetcol();
+	draw();
 }
+
+start();
