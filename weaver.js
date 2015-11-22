@@ -1,11 +1,7 @@
 var lienzo = document.getElementById("lienzo");
 var pluma = lienzo.getContext("2d");
-var an = document.getElementById("an");
-var bn = document.getElementById("bn");
 var a = 5;
 var b = 5;
-an.max = a - 1;
-bn.max = b - 1;
 var matrix = [];
 var cola = [];
 var colb = [];
@@ -304,11 +300,6 @@ lienzo.addEventListener("click", function (e){
 		draw();
 	}
 }, false);
-
-function swap(){
-	change(an.value, bn.value);
-	draw();
-}
 
 function start(){
 	rese();
