@@ -56,9 +56,25 @@ function tira(x0, y0, r, g, b){
 	}
 }
 
+function tirb(x0, y0, r, g, b){
+	for (var jj=0; jj<50; jj++){
+		for (var ii=0; ii<6; ii++){
+			pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], 1 - (((16 - 3*ii)*(16 - 3*ii) - 1)/255))));
+		}
+		for (var ii=6; ii<24; ii++){
+			pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr([r, g, b]));
+		}
+		for (var ii=0; ii<6; ii++){
+			pix(x0 + 16 - ii + jj, y0 + jj + 34 + ii, rgbstr(prod([r, g, b], 1 - (((3*ii + 1)*(3*ii + 1) - 1)/255))));
+		}
+	}
+}
+
 for (var ii=0; ii<12; ii++){
 	for (var jj=0; jj<5; jj++){
 		lista=randcol();
 		tira(100*ii, 100*jj, lista[0], lista[1], lista[2]);
+		lista=randcol();
+		tirb(100*ii + 50, 100*jj + 50, lista[0], lista[1], lista[2]);
 	}
 }
