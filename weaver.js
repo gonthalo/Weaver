@@ -9,6 +9,15 @@ bn.max = b - 1;
 var matrix = [];
 var cola = [];
 var colb = [];
+var sola = [];
+var solb = [];
+
+function prod(lis, k){
+	for (var ii=0; ii<3; ii++){
+		lis[ii] = parseInt(lis[ii]*k);
+	}
+	return lis;
+}
 
 function rese(){
 	for (var ii=0; ii<a; ii++){
@@ -19,16 +28,70 @@ function rese(){
 	}
 }
 
+function rhomb(cx, cy, d, lis){
+	pluma.fillStyle = rgbstr(lis);
+	for (var ii=0; ii<=d; ii++){
+		pluma.fillRect(cx + d - ii, cy + ii, 1, 1);
+		pluma.fillRect(cx - ii, cy + d - ii, 1, 1);
+		pluma.fillRect(cx + ii, cy - d + ii, 1, 1);
+		pluma.fillRect(cx - d + ii, cy - ii, 1, 1);
+	}
+}
+
+function rhombit(cx, cy, d, lis){
+	for (var tt=0; tt<6; tt++){
+		rhomb(cx, cy, d - tt, prod([lis[0], lis[1], lis[2]], (tt*(32 - 3*tt))/85));
+	}
+	for (var tt=0; tt<25; tt++){
+		rhomb(cx, cy, tt, lis);
+	}
+}
+
 function resetcol(){
 	for (var ii=0; ii<a; ii++){
 		cola[ii] = randcol();
-		pluma.fillStyle = rgbstr(cola[ii]);
-		pluma.fillRect(50*(b + ii + 1), 50*(ii + 1), 50, 50);
+		rhombit(50*(b + ii + 2), 50*(ii + 1), 30, cola[ii]);
 	}
 	for (var ii=0; ii<b; ii++){
 		colb[ii] = randcol();
-		pluma.fillStyle = rgbstr(colb[ii]);
-		pluma.fillRect(50*(b - ii), 50*(ii + 1), 50, 50);
+		rhombit(50*(b - ii), 50*(ii + 1), 30, colb[ii]);
+	}
+}
+
+function resetsol(){
+	solb = [];
+	sola = [];
+	for (var jj=0; jj<b; jj++){
+		solb[jj] = jj;
+	}
+	for (var ii=0; ii<a; ii++){
+		var c = b + ii;
+		for (var jj=0; jj<b; jj++){
+			if (Math.random()*2 > 1){
+				var aux = c;
+				c = solb[jj];
+				solb[jj] = aux;
+			}
+		}
+		sola[ii] = c;
+	}
+	console.log(sola, solb);
+	var color1 = [];
+	for (var ii=0; ii<a; ii++){
+		if (sola[ii] < b){
+			color1 = colb[sola[ii]];
+		} else {
+			color1 = cola[sola[ii] - b];
+		}
+		rhombit(50*(ii + 1), 50*(b + ii + 2), 30, color1);
+	}
+	for (var ii=0; ii<b; ii++){
+		if (solb[ii] < b){
+			color1 = colb[solb[ii]];
+		} else {
+			color1 = cola[solb[ii] - b];
+		}
+		rhombit(50*(b + a - ii + 1), 50*(a + ii + 2), 30, color1);
 	}
 }
 
@@ -45,7 +108,19 @@ function pix(p, q, c){
 	pluma.fillRect(p, q, 2, 1);
 }
 
+function eq(l1, l2){
+	if (l1.length!=l2.length){
+		return false;
+	}
+	for (var ii=0; ii<l1.length; ii++){
+		if (l1[ii]!=l2[ii]){
+			return false;
+		}
+	}
+	return true;
+}
 function draw(){
+	var checkwin = true;
 	var lis = [];
 	for (var ii=0; ii<b; ii++){
 		lis[ii]=colb[ii];
@@ -72,20 +147,41 @@ function draw(){
 				}
 			}
 		}
+		if (checkwin){
+			if (sola[ii] < b){
+				if (!eq(colb[sola[ii]], c)){
+					checkwin = false;
+				}
+			} else {
+				if (!eq(cola[sola[ii] - b], c)){
+					checkwin = false;
+				}
+			}
+		}
 	}
-}
-
-function prod(lis, k){
-	for (var ii=0; ii<3; ii++){
-		lis[ii] = parseInt(lis[ii]*k);
+	if (checkwin){
+		for (var ii=0; ii<b; ii++){
+			if (solb[ii] < b){
+				if (!eq(colb[solb[ii]], lis[ii])){
+					checkwin = false;
+				}
+			} else {
+				if (!eq(cola[solb[ii] - b], lis[ii])){
+					checkwin = false;
+				}
+			}
+		}
 	}
-	return lis;
+	if (checkwin){
+		console.log("You win. Yay!");
+		document.getElementById("mensajes").innerHTML = "Has ganado";
+	}
 }
 
 function tira(x0, y0, r, g, b, leng){
 	for (var jj=0; jj<leng; jj++){
 		for (var ii=0; ii<6; ii++){
-			pix(x0 + 60 + ii - jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], 1 - (((16 - 3*ii)*(16 - 3*ii) - 1)/255))));
+			pix(x0 + 60 + ii - jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], (ii*(32 - 3*ii))/85)));
 		}
 		for (var ii=6; ii<24; ii++){
 			pix(x0 + 60 + ii - jj, y0 + jj + ii + 10, rgbstr([r, g, b]));
@@ -99,7 +195,7 @@ function tira(x0, y0, r, g, b, leng){
 function tirb(x0, y0, r, g, b, leng){
 	for (var jj=0; jj<leng; jj++){
 		for (var ii=0; ii<6; ii++){
-			pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], 1 - (((16 - 3*ii)*(16 - 3*ii) - 1)/255))));
+			pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], (ii*(32 - 3*ii))/85)));
 		}
 		for (var ii=6; ii<24; ii++){
 			pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr([r, g, b]));
@@ -114,7 +210,7 @@ function twista(x0, y0, r, g, b){
 	for (var jj=0; jj<40; jj++){
 		for (var ii=0; ii<6; ii++){
 			if (ii > jj - 10){
-				pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], 1 - (((16 - 3*ii)*(16 - 3*ii) - 1)/255))));
+				pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], (ii*(32 - 3*ii))/85)));
 			}
 		}
 		for (var ii=6; ii<24; ii++){
@@ -135,7 +231,7 @@ function twysta(x0, y0, r, g, b){
 	for (var jj=0; jj<40; jj++){
 		for (var ii=0; ii<6; ii++){
 			if (ii > jj - 10){
-				pix(x0 + 60 + ii - jj, y0 - jj - ii + 88, rgbstr(prod([r, g, b], 1 - (((16 - 3*ii)*(16 - 3*ii) - 1)/255))));
+				pix(x0 + 60 + ii - jj, y0 - jj - ii + 88, rgbstr(prod([r, g, b], (ii*(32 - 3*ii))/85)));
 			}
 		}
 		for (var ii=6; ii<24; ii++){
@@ -152,6 +248,27 @@ function twysta(x0, y0, r, g, b){
 	tira(x0, y0, r, g, b, 10);
 }
 
+function twistb(x0, y0, r, g, b){
+	for (var jj=0; jj<40; jj++){
+		for (var ii=0; ii<6; ii++){
+			if (ii > jj - 10){
+				pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], (ii*(32 - 3*ii))/85)));
+			}
+		}
+		for (var ii=6; ii<24; ii++){
+			if (ii > jj - 10){
+				pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr([r, g, b]));
+			}
+		}
+		for (var ii=24; ii<30; ii++){
+			if (ii > jj - 10){
+				pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], 1 - (((3*(ii - 24) + 1)*(3*(ii - 24) + 1) - 1)/255))));
+			}
+		}
+	}
+	tirb(x0, y0, r, g, b, 10);
+}
+
 function swap(){
 	matrix[an.value][bn.value] = !matrix[an.value][bn.value];
 	draw();
@@ -160,7 +277,9 @@ function swap(){
 function start(){
 	rese();
 	resetcol();
+	resetsol();
 	draw();
+	document.getElementById("mensajes").innerHTML = "";
 }
 
 start();
