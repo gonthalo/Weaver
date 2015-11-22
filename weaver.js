@@ -269,8 +269,44 @@ function twistb(x0, y0, r, g, b){
 	tirb(x0, y0, r, g, b, 10);
 }
 
+function change(xn, yn){
+	matrix[xn][yn] = !matrix[xn][yn];
+}
+
+function ro(num){
+	n = parseInt(num + 0.5);
+	if ((num - n)*(num - n) <= 0.09){
+		return n;
+	}
+	return -1;
+}
+
+lienzo.addEventListener("click", function (e){
+	var x;
+	var y;
+	if (e.pageX || e.pageY) {
+		x = e.pageX;
+		y = e.pageY;
+	} else {
+		x = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+		y = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+	}
+	x -= lienzo.offsetLeft;
+	y -= lienzo.offsetTop;
+	console.log(x, y);
+	x = x/50.0;
+	y = y/50.0;
+	var xx = ro((x + y)/2 - b + 1);
+	var yy = ro((y - x)/2 + b - 3);
+	console.log(xx, yy);
+	if (xx>=0 && xx<a && yy>=0 && yy<b){
+		change(xx, yy);
+		draw();
+	}
+}, false);
+
 function swap(){
-	matrix[an.value][bn.value] = !matrix[an.value][bn.value];
+	change(an.value, bn.value);
 	draw();
 }
 
