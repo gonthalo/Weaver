@@ -5,8 +5,16 @@
 </head>
 <body>
 	<div style="border:2px solid rgb(5,200,100)">
-		<canvas id="lienzo" width="600px" height="600px" >Your browser does not render the HTML 5 canvas tag</canvas>
-		Dimensiones: <input type="number" id="an" max="5" min="0"><input type="number" id="bn" max="5" min="0"><input type="button" value="Cambiar" onclick="swap()"><input type="button" value="Reset" onclick="start()"><p id="mensajes"></p>
+		<table>
+			<tr>
+				<td><canvas id="lienzo" width="640px" height="640px" >Your browser does not render the HTML 5 canvas tag</canvas></td>
+				<td>
+					Dimensiones: <input type="number" id="an" max="5" min="0"><input type="number" id="bn" max="5" min="0"><input type="button" value="Cambiar" onclick="swap()">
+					</br></br>
+					<input type="button" value="Desdoblar" onclick="rese();draw()"><input type="button" value="Reset" onclick="start()"><input type="button" value="Bot 1" onclick="robotsolve()"><p id="mensajes"></p>
+				</td>
+			</tr>
+		</table>
 	</div>
 	<script type="text/javascript" src="weaver.js"></script>
 </body>
