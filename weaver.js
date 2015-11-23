@@ -126,10 +126,15 @@ function draw(){
 		c = cola[ii];
 		for (var jj=0; jj<b; jj++){
 			if (matrix[ii][jj]){
-				twista(50*(b + ii - jj), 50*(1 + ii + jj), lis[jj][0], lis[jj][1], lis[jj][2]);
-				twysta(50*(b + ii - jj), 50*(1 + ii + jj), c[0], c[1], c[2]);
-				for (var kk=20; kk<80; kk++){
-					pix(50*(1 + b + ii - jj), 50*(1 + ii + jj) + kk, [0,0,0]);
+				if ((ii + jj)%2){
+					twista(50*(b + ii - jj), 50*(1 + ii + jj), lis[jj][0], lis[jj][1], lis[jj][2]);
+					twysta(50*(b + ii - jj), 50*(1 + ii + jj), c[0], c[1], c[2]);
+				} else {
+					twystb(50*(b + ii - jj), 50*(1 + ii + jj), lis[jj][0], lis[jj][1], lis[jj][2]);
+					twistb(50*(b + ii - jj), 50*(1 + ii + jj), c[0], c[1], c[2]);
+				}
+				for (var kk=19; kk<80; kk++){
+					pix(50*(1 + b + ii - jj), 50*(1 + ii + jj) + kk, "rgb(255,255,255)");
 				}
 				var aux = c;
 				c = lis[jj];
@@ -238,17 +243,38 @@ function twistb(x0, y0, r, g, b){
 	for (var jj=0; jj<40; jj++){
 		for (var ii=0; ii<6; ii++){
 			if (ii > jj - 10){
-				pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], (ii*(32 - 3*ii))/85)));
+				pix(x0 + 60 + ii - jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], (ii*(32 - 3*ii))/85)));
 			}
 		}
 		for (var ii=6; ii<24; ii++){
 			if (ii > jj - 10){
-				pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr([r, g, b]));
+				pix(x0 + 60 + ii - jj, y0 + jj + ii + 10, rgbstr([r, g, b]));
 			}
 		}
 		for (var ii=24; ii<30; ii++){
 			if (ii > jj - 10){
-				pix(x0 + 40 - ii + jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], 1 - (((3*(ii - 24) + 1)*(3*(ii - 24) + 1) - 1)/255))));
+				pix(x0 + 60 + ii - jj, y0 + jj + ii + 10, rgbstr(prod([r, g, b], 1 - (((3*(ii - 24) + 1)*(3*(ii - 24) + 1) - 1)/255))));
+			}
+		}
+	}
+	tirb(x0 + 40, y0 + 40, r, g, b, 10);
+}
+
+function twystb(x0, y0, r, g, b){
+	for (var jj=0; jj<40; jj++){
+		for (var ii=0; ii<6; ii++){
+			if (ii > jj - 10){
+				pix(x0 + 40 - ii + jj, y0 - jj - ii + 88, rgbstr(prod([r, g, b], (ii*(32 - 3*ii))/85)));
+			}
+		}
+		for (var ii=6; ii<24; ii++){
+			if (ii > jj - 10){
+				pix(x0 + 40 - ii + jj, y0 - jj - ii + 88, rgbstr([r, g, b]));
+			}
+		}
+		for (var ii=24; ii<30; ii++){
+			if (ii > jj - 10){
+				pix(x0 + 40 - ii + jj, y0 - jj - ii + 88, rgbstr(prod([r, g, b], 1 - (((3*(ii - 24) + 1)*(3*(ii - 24) + 1) - 1)/255))));
 			}
 		}
 	}
