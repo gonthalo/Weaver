@@ -115,6 +115,7 @@ function eq(l1, l2){
 	}
 	return true;
 }
+
 function draw(){
 	var checkwin = true;
 	var lis = [];
@@ -144,27 +145,15 @@ function draw(){
 			}
 		}
 		if (checkwin){
-			if (sola[ii] < b){
-				if (!eq(colb[sola[ii]], c)){
-					checkwin = false;
-				}
-			} else {
-				if (!eq(cola[sola[ii] - b], c)){
-					checkwin = false;
-				}
+			if (!eq(color(sola[ii]), c)){
+				checkwin = false;
 			}
 		}
 	}
 	if (checkwin){
 		for (var ii=0; ii<b; ii++){
-			if (solb[ii] < b){
-				if (!eq(colb[solb[ii]], lis[ii])){
-					checkwin = false;
-				}
-			} else {
-				if (!eq(cola[solb[ii] - b], lis[ii])){
-					checkwin = false;
-				}
+			if (!eq(color(solb[ii]), lis[ii])){
+				checkwin = false;
 			}
 		}
 	}
@@ -302,7 +291,38 @@ lienzo.addEventListener("click", function (e){
 	}
 }, false);
 
+function color(n){
+	if (n < b){
+		return colb[n];
+	}
+	return cola[n - b];
+}
+
+function robotsolve(){
+	rese();
+	var lis = [];
+	for (var ii=0; ii<b; ii++){
+		lis[ii]=colb[ii];
+	}
+	for (var ii=0; ii<a; ii++){
+		c = cola[ii];
+		for (var jj=0; jj<b; jj++){
+			if (!eq(c, lis[jj])){
+				if ( eq(c, color(solb[jj])) || eq(lis[jj], color(sola[ii])) ){
+					matrix[ii][jj]=true;
+					var aux = c;
+					c = lis[jj];
+					lis[jj] = aux;
+				}
+			}
+		}
+	}
+	draw();
+}
+
 function start(){
+	pluma.fillStyle = "white";
+	pluma.fillRect(0, 0, 600, 600);
 	matrix = [];
 	cola = [];
 	colb = [];
@@ -318,7 +338,7 @@ function swap(){
 	a = parseInt(document.getElementById("an").value);
 	b = parseInt(document.getElementById("bn").value);
 	pluma.fillStyle = "white";
-	pluma.fillRect(0, 0, 600, 600);
+	pluma.fillRect(0, 0, 640, 640);
 	start();
 }
 
