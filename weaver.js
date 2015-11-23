@@ -16,7 +16,11 @@ function prod(lis, k){
 }
 
 function randcol(){
-	return [parseInt(Math.random()*4)*85, parseInt(Math.random()*4)*85, parseInt(Math.random()*4)*85];
+	var lis = [parseInt(Math.random()*4)*85, parseInt(Math.random()*4)*85, parseInt(Math.random()*4)*85];
+	if (lis[0] + lis[1] + lis[2]==0){
+		return randcol();
+	}
+	return lis;
 }
 
 function rgbstr(lis){
