@@ -1,9 +1,10 @@
 var lienzo = document.getElementById("lienzo");
 var pluma = lienzo.getContext("2d");
 var im_victory = new Image();
-im_victory.src = "https://euroalter.com/wp-content/uploads/2014/10/victory.jpg";
+im_victory.src = "https://cloud.githubusercontent.com/assets/5852184/11346714/3610d722-921e-11e5-9fe5-6422bad57e5d.png";
 var a = 5;
 var b = 5;
+var image_on = false;
 var matrix = [];
 var cola = [];
 var colb = [];
@@ -90,23 +91,11 @@ function resetsol(){
 		}
 		sola[ii] = c;
 	}
-	console.log(sola, solb);
-	var color1 = [];
 	for (var ii=0; ii<a; ii++){
-		if (sola[ii] < b){
-			color1 = colb[sola[ii]];
-		} else {
-			color1 = cola[sola[ii] - b];
-		}
-		rhombit(50*(ii + 1), 50*(b + ii + 2), 30, color1);
+		rhombit(50*(ii + 1), 50*(b + ii + 2), 30, color(sola[ii]));
 	}
 	for (var ii=0; ii<b; ii++){
-		if (solb[ii] < b){
-			color1 = colb[solb[ii]];
-		} else {
-			color1 = cola[solb[ii] - b];
-		}
-		rhombit(50*(b + a - ii + 1), 50*(a + ii + 2), 30, color1);
+		rhombit(50*(b + a - ii + 1), 50*(a + ii + 2), 30, color(solb[ii]));
 	}
 }
 
@@ -122,8 +111,11 @@ function eq(l1, l2){
 	return true;
 }
 
-function draw(){
+function draw(boo){
 	var checkwin = true;
+	if (boo != undefined){
+		checkwin = boo;
+	}
 	var lis = [];
 	for (var ii=0; ii<b; ii++){
 		lis[ii]=colb[ii];
@@ -170,7 +162,10 @@ function draw(){
 	}
 	if (checkwin){
 		console.log("You win. Yay!");
-		pluma.drawImage(im_victory, 0, 0);
+		if (!image_on){
+			pluma.drawImage(im_victory, 0, 0);
+			image_on = true;
+		}
 	}
 }
 
@@ -299,6 +294,20 @@ function ro(num){
 }
 
 lienzo.addEventListener("click", function (e){
+	if (image_on){
+		image_on = false;
+		pluma.fillStyle = "white";
+		pluma.fillRect(0, 0, 600, 600);
+		for (var ii=0; ii<a; ii++){
+			rhombit(50*(ii + 1), 50*(b + ii + 2), 30, color(sola[ii]));
+			rhombit(50*(b + ii + 2), 50*(ii + 1), 30, cola[ii]);
+		}
+		for (var ii=0; ii<b; ii++){
+			rhombit(50*(b + a - ii + 1), 50*(a + ii + 2), 30, color(solb[ii]));
+			rhombit(50*(b - ii), 50*(ii + 1), 30, colb[ii]);
+		}
+		draw(false);
+	}
 	var x;
 	var y;
 	if (e.pageX || e.pageY) {
