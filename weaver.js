@@ -1,5 +1,7 @@
 var lienzo = document.getElementById("lienzo");
 var pluma = lienzo.getContext("2d");
+var im_victory = new Image();
+im_victory.src = "https://euroalter.com/wp-content/uploads/2014/10/victory.jpg";
 var a = 5;
 var b = 5;
 var matrix = [];
@@ -168,8 +170,7 @@ function draw(){
 	}
 	if (checkwin){
 		console.log("You win. Yay!");
-		pluma.font = "50px Times";
-		pluma.strokeText("Victoria", 10, 60);
+		pluma.drawImage(im_victory, 0, 0);
 	}
 }
 
